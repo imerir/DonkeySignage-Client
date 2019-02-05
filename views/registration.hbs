@@ -1,0 +1,10 @@
+
+{{#if token}}
+    <h2>{{ message }}</h2>
+    <h1>{{ token }}</h1>
+{{/if}}
+{{#unless token}}
+    <h1>{{ message }}</h1>
+    <script src="/javascripts/waitForToken.js"></script>
+{{/unless}}
+
