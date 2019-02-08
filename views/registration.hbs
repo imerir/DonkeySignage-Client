@@ -2,11 +2,15 @@
 {{#if token}}
     <h2>{{ message }}</h2>
     <h1>{{ token }}</h1>
-    <script src="/javascripts/waitForRegistration.js"></script>
 
 {{/if}}
 {{#unless token}}
     <h1>{{ message }}</h1>
-    <script src="/javascripts/waitForTempToken.js"></script>
 {{/unless}}
 
+
+<script>
+    var tokenState = "{{state.tokenState}}";
+    var state = "{{state.state}}"
+</script>
+<script src="/js/stateCheck.js"></script>

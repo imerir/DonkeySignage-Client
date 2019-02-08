@@ -1,1 +1,14 @@
-<h1>{{message}}</h1>
+{{#ifeq state.tokenState "OK"}}
+    {{#ifnoteq state.state "DISPLAY"}}
+        <h1>{{{message}}}</h1>
+    {{/ifnoteq}}
+
+{{/ifeq}}
+
+
+
+<script>
+    var tokenState = "{{state.tokenState}}";
+    var state = "{{state.state}}"
+</script>
+<script src="/js/stateCheck.js"></script>

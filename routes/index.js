@@ -5,6 +5,9 @@ const fs = require("fs");
 const configTools = require('../tools/configTools');
 const axios = require('axios');
 const servTools = require("../tools/serverTools");
+let State = require("../tools/state");
+const Handlebars = require("hbs");
+
 
 var intervalRegister;
 
@@ -12,42 +15,58 @@ var intervalRegister;
 /* GET home page. */
 router.get('/', function (req, res, next) {
 
-    if(!fs.existsSync(configTools.configFilePath) || !configTools.checkConfig()){
-        console.log("Config doesn't exist or is invalid. New registration.");
-        configTools.getTempToken();
-        res.render('registration', {message: 'Get registration token from server...', token: null});
-    }
-    else {
-        if(configTools.getConfig().isTemp){
-            console.log("Detecting temp token, wait for registration.");
-            res.render('registration', {message: 'Your registration token: ',token: configTools.getConfig().token});
+
+
+    let state = new State().getInstance();
+    console.log(state.mainInfo);
+    switch (state.mainInfo.tokenState) {
+        case "NEED_TMP_TOKEN":
+            configTools.getTempToken();
+            state.mainInfo.tokenState = "WAIT_TMP_TOKEN";
+
+        case "WAIT_TPM_TOKEN":
+            res.render('registration', {message: 'Get registration token from server...', token: null, state: state.mainInfo});
+            break;
+
+        case "WAIT_REGISTER":
+            res.render('registration', {message: 'Your registration token: ',token: state.mainInfo.token, state: state.mainInfo});
             clearInterval(intervalRegister);
-            intervalRegister = setInterval(checkRegister, 1000)
-        }
-        else{
-            console.log("Config ok.");
-            //TODO Check token/uuid form server.
-            servTools.openWebSocket("ws://echo.websocket.org");
-            res.render('index', { message: "Registration done !" });
+            intervalRegister = setInterval(configTools.checkRegister, 1000);
+            break;
+        case "OK":
+            clearInterval(intervalRegister);
+            switch (state.mainInfo.state) {
+                case "NEED_SOCKET":
+                    servTools.openWebSocket(servTools.serverAddr);
+                    state.mainInfo.state = "CONNECTING";
+                case "CONNECTING":
+                    res.render('index', { message: "Registration done !</br>Connecting to server...", state: state.mainInfo});
+                    break;
+                case "AUTH":
+                    res.render('index', { message: "Connected! Authentication...", state: state.mainInfo});
+                    break;
+                case "UPDATE":
+                    res.render('index', { message: "Connected! Updating...", state: state.mainInfo});
+                    break;
+                case "OK":
+                    res.render('index', { message: "Ok", state: state.mainInfo});
+                    break;
+                case "AUTH_ERROR":
+                    res.render('index', { message: "Auth Fail", state: state.mainInfo});
+                    break;
+                case "CON_ERROR":
+                    res.render('index', { message: "Connection to server fail", state: state.mainInfo});
+                    break;
+
+            }
 
 
-        }
+
+            break;
+
+            //TODO case error;
+
     }
 });
-
-function checkRegister(){
-    axios.get(servTools.serverAddr + '/api/screen/isRegistered', {headers:{Cookie: 'uuid=' + configTools.getConfig().uuid + ';'}})
-        .then(response => {
-            console.log('UUID: ' + response.data.uuid);
-            console.log('Token: ' + response.data.token);
-            let toSave = {"uuid": response.data.uuid, "token" : response.data.token, "isTemp": false};
-            fs.writeFile(configTools.configFilePath, JSON.stringify(toSave), 'utf8', () => {
-            });
-            clearInterval(intervalRegister);
-        })
-        .catch(error => {
-            console.log("Not registered.")
-        });
-}
 
 module.exports = router;
