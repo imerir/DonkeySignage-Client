@@ -14,7 +14,7 @@ function getConfig() {
 }
 
 /**
- * Get the temp tpken corresponding to UUID from the server
+ * Get the temp token corresponding to UUID from the server
  */
 function getTempToken() {
     console.log(new State().getInstance().mainInfo);

@@ -41,6 +41,18 @@ class State {
         console.log(this.mainInfo);
     }
 
+    renewUUID(){
+        this.mainInfo = {
+            tokenState: "",
+            state: "NEED_TMP_TOKEN",
+            uuid: uuid(),
+            token: "",
+            message: "",
+            needUpdate: false
+        };
+        this.save();
+    }
+
     save(){
         fs.writeFile(configTools.configFilePath, JSON.stringify(this.mainInfo), 'utf8', () => {});
     }

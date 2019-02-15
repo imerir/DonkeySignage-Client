@@ -1,6 +1,9 @@
-exports.serverAddr = 'https://donkeysignage.imerir.org';
+// exports.serverAddr = 'donkeysignage.imerir.org';
+exports.serverAddr = 'http://localhost:8080';
+exports.webSocketAddr = 'ws://localhost:8080/ws';
 const W3CWebSocket = require('websocket').w3cwebsocket;
 const configTools = require('../tools/configTools');
+const widgetTools = require('../tools/widgetTools');
 let client;
 let State = require("../tools/state");
 
@@ -31,10 +34,42 @@ function  openWebSocket(wsURL) {
     };
 
     client.onmessage = function(e) {
-        //TODO detect login response
+        console.log("Receive message on websocket!");
 
-        console.log(e.data);
+        let message = JSON.parse(e.data);
+        console.debug(message);
+        switch (message.type) {
+            case 'AUTH':
+                if(message.data.status === "ok"){
+                    state.mainInfo.state = "UPDATE";
+                }
+                else{
+                    state.mainInfo.state = "AUTH_ERROR";
+                    state.mainInfo.message = message.data.status
+                }
+                break;
+
+            case "MANIFEST":
+                let widgets = message.data.list;
+                console.debug(widgets);
+                widgetTools.saveWidgets(widgets);
+                getConfig();
+                break;
+
+            case "CONFIG":
+
+
+        }
     };
+}
+
+
+function getConfig(){
+    let configGet = {
+        "type": "CONFIG",
+        "data": {}
+    };
+    client.send(JSON.stringify(configGet));
 }
 
 function webSocketSend(value){

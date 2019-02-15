@@ -18,7 +18,7 @@ router.get('/', function (req, res, next) {
 
 
     let state = new State().getInstance();
-    console.log(state.mainInfo);
+    console.log(state.mainInfo.state);
     switch (state.mainInfo.tokenState) {
         case "NEED_TMP_TOKEN":
             configTools.getTempToken();
@@ -37,7 +37,8 @@ router.get('/', function (req, res, next) {
             clearInterval(intervalRegister);
             switch (state.mainInfo.state) {
                 case "NEED_SOCKET":
-                    servTools.openWebSocket(servTools.serverAddr);
+                    // servTools.openWebSocket(servTools.serverAddr);
+                    servTools.openWebSocket(servTools.webSocketAddr);
                     state.mainInfo.state = "CONNECTING";
                 case "CONNECTING":
                     res.render('index', { message: "Registration done !</br>Connecting to server...", state: state.mainInfo});
@@ -52,7 +53,7 @@ router.get('/', function (req, res, next) {
                     res.render('index', { message: "Ok", state: state.mainInfo});
                     break;
                 case "AUTH_ERROR":
-                    res.render('index', { message: "Auth Fail", state: state.mainInfo});
+                    res.render('index', { message: "Auth Fail", reason: state.mainInfo.message, state: state.mainInfo});
                     break;
                 case "CON_ERROR":
                     res.render('index', { message: "Connection to server fail", state: state.mainInfo});

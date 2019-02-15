@@ -1,7 +1,11 @@
 {{#ifeq state.tokenState "OK"}}
     {{#ifnoteq state.state "DISPLAY"}}
         <h1>{{{message}}}</h1>
+        {{#if reason}}
+            <h2>{{reason}}</h2>
+        {{/if}}
     {{/ifnoteq}}
+
 
 {{/ifeq}}
 
