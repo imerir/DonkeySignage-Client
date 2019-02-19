@@ -4,6 +4,8 @@ exports.webSocketAddr = 'ws://localhost:8080/ws';
 const W3CWebSocket = require('websocket').w3cwebsocket;
 const configTools = require('../tools/configTools');
 const widgetTools = require('../tools/widgetTools');
+const fs = require("fs");
+
 let client;
 let State = require("../tools/state");
 
@@ -57,6 +59,8 @@ function  openWebSocket(wsURL) {
                 break;
 
             case "CONFIG":
+                saveTemplate(message);
+                state.mainInfo.state = "OK";
 
 
         }
@@ -74,6 +78,17 @@ function getConfig(){
 
 function webSocketSend(value){
     client.send(value);
+}
+
+
+function saveTemplate(value){
+    let template = value.data.template;
+    console.debug(template);
+    template.widgetConfigs.forEach(item =>{
+       item.param = JSON.parse(item.param);
+    });
+    fs.writeFile(configTools.templateFilePath, JSON.stringify(template), 'utf8', () => {});
+
 }
 
 exports.openWebSocket = openWebSocket;

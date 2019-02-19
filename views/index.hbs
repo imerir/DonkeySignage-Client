@@ -1,10 +1,16 @@
 {{#ifeq state.tokenState "OK"}}
-    {{#ifnoteq state.state "DISPLAY"}}
+    {{#ifnoteq state.state "OK"}}
         <h1>{{{message}}}</h1>
         {{#if reason}}
             <h2>{{reason}}</h2>
         {{/if}}
     {{/ifnoteq}}
+
+    {{#ifeq state.state "OK"}}
+        <div id="main">
+
+        </div>
+    {{/ifeq}}
 
 
 {{/ifeq}}
@@ -15,4 +21,7 @@
     var tokenState = "{{state.tokenState}}";
     var state = "{{state.state}}"
 </script>
+{{#ifeq state.state "OK"}}
+    <script src="/js/loadTemplate.js"></script>
+{{/ifeq}}
 <script src="/js/stateCheck.js"></script>

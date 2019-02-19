@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const configTools = require('../tools/configTools');
 let State = require("../tools/state");
+const fs = require("fs");
+
 
 // Route for ..../api/...
 
@@ -26,4 +28,18 @@ router.post("/getState", ((req, res, next) => {
     let state = new State().getInstance();
     res.json({tokenState : state.mainInfo.tokenState, state: state.mainInfo.state});
 }));
+
+
+router.post("/getTemplate", ((req, res, next) => {
+    if(fs.existsSync(configTools.configFilePath)){
+        let template = JSON.parse(fs.readFileSync(configTools.templateFilePath));
+        res.json(template);
+    }
+    else{
+        res.status(500);
+        res.send('');
+    }
+
+}));
+
 module.exports = router;

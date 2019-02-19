@@ -1,5 +1,6 @@
 const fs = require("fs");
 const configFilePath = "./config.json";
+const templateFilePath = "./template.json";
 const servTools = require("./serverTools");
 const axios = require('axios');
 let State = require("../tools/state");
@@ -68,3 +69,4 @@ exports.getTempToken = getTempToken;
 exports.checkRegister = checkRegister;
 
 exports.configFilePath = configFilePath;
+exports.templateFilePath = templateFilePath;
