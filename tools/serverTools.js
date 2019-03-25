@@ -1,6 +1,8 @@
-// exports.serverAddr = 'donkeysignage.imerir.org';
-exports.serverAddr = 'http://localhost:8080';
-exports.webSocketAddr = 'ws://localhost:8080/ws';
+exports.serverAddr = 'https://donkeysignage.imerir.org';
+exports.webSocketAddr = 'wss://donkeysignage.imerir.org/ws';
+// exports.serverAddr = 'http://localhost:8080';
+// exports.webSocketAddr = 'ws://localhost:8080/ws';
+
 const W3CWebSocket = require('websocket').w3cwebsocket;
 const configTools = require('../tools/configTools');
 const widgetTools = require('../tools/widgetTools');
@@ -84,9 +86,11 @@ function webSocketSend(value){
 function saveTemplate(value){
     let template = value.data.template;
     console.debug(template);
-    template.widgetConfigs.forEach(item =>{
-       item.param = JSON.parse(item.param);
-    });
+    if(template != null){
+        template.widgetConfigs.forEach(item =>{
+            item.param = JSON.parse(item.param);
+        });
+    }
     fs.writeFile(configTools.templateFilePath, JSON.stringify(template), 'utf8', () => {});
 
 }
