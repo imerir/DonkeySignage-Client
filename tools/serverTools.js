@@ -1,7 +1,7 @@
-exports.serverAddr = 'https://donkeysignage.imerir.org';
-exports.webSocketAddr = 'wss://donkeysignage.imerir.org/ws';
-// exports.serverAddr = 'http://localhost:8080';
-// exports.webSocketAddr = 'ws://localhost:8080/ws';
+// exports.serverAddr = 'https://donkeysignage.imerir.org';
+// exports.webSocketAddr = 'wss://donkeysignage.imerir.org/ws';
+exports.serverAddr = 'http://localhost:8080';
+exports.webSocketAddr = 'ws://localhost:8080/ws';
 
 const W3CWebSocket = require('websocket').w3cwebsocket;
 const configTools = require('../tools/configTools');
@@ -62,8 +62,10 @@ function  openWebSocket(wsURL) {
 
             case "CONFIG":
                 saveTemplate(message);
-                state.mainInfo.state = "OK";
-
+                if(state.mainInfo.state === "OK")
+                    state.mainInfo.state = "NEED_REFRESH";
+                else
+                    state.mainInfo.state = "OK";
 
         }
     };

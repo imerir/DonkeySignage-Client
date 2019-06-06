@@ -49,6 +49,10 @@ router.get('/', function (req, res, next) {
                 case "UPDATE":
                     res.render('index', { message: "Connected! Updating...", state: state.mainInfo});
                     break;
+                case "NEED_REFRESH":
+                    state.mainInfo.state = "OK";
+                    res.render('index', { message: "Ok", state: state.mainInfo});
+                    break;
                 case "OK":
                     res.render('index', { message: "Ok", state: state.mainInfo});
                     break;

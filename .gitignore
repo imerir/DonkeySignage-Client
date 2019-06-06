@@ -116,3 +116,6 @@ typings/
 .next
 
 
+public/widgets
+template.json
+config.json

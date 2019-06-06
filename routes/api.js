@@ -31,8 +31,13 @@ router.post("/getState", ((req, res, next) => {
 
 
 router.post("/getTemplate", ((req, res, next) => {
+
     if(fs.existsSync(configTools.configFilePath)){
         let template = JSON.parse(fs.readFileSync(configTools.templateFilePath));
+        if(req.query.id){
+            let obj = template.widgetConfigs.find(x => x.id ==  req.query.id);
+            res.json(obj);
+        }
         res.json(template);
     }
     else{

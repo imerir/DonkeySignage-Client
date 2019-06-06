@@ -17,7 +17,9 @@ $( document ).ready(function() {
                     data = data.replace(/\$sizeHeight/g, item.posY + item.sizeHeight + 1 );
 
                     receive = receive.replace(/\$id/g, item.id);
-                    receive = receive.replace(/\$param/g, JSON.stringify(item.param));
+                    let strParam = JSON.stringify(item.param);
+                    strParam = strParam.replace(/'/g, "\\\'");
+                    receive = receive.replace(/\$param/g, strParam);
                     data = data.replace(/\$content/g, receive);
                     // console.log(data);
                     $('#grid').append(data);
