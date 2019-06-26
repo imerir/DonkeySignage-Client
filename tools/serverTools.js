@@ -1,7 +1,7 @@
 // exports.serverAddr = 'https://donkeysignage.imerir.org';
 // exports.webSocketAddr = 'wss://donkeysignage.imerir.org/ws';
-exports.serverAddr = 'http://localhost:8081';
-exports.webSocketAddr = 'ws://localhost:8081/ws';
+exports.serverAddr = 'http://' + process.argv[2];
+exports.webSocketAddr = 'ws://'+process.argv[2]+'/ws';
 
 const W3CWebSocket = require('websocket').w3cwebsocket;
 const configTools = require('../tools/configTools');
