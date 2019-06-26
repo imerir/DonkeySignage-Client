@@ -4,7 +4,7 @@ const widgetDir = "./public/widgets";
 function clearDir(path) {
 
     if(!fs.existsSync(path)){
-        fs.mkdir(path);
+        fs.mkdirSync(path);
     }
     let files = fs.readdirSync(path);
     console.log("Clean old widgets...");
