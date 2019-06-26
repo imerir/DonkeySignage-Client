@@ -2,6 +2,10 @@ let fs = require("fs");
 const widgetDir = "./public/widgets";
 
 function clearDir(path) {
+
+    if(!fs.existsSync(path)){
+        fs.mkdir(path);
+    }
     let files = fs.readdirSync(path);
     console.log("Clean old widgets...");
     files.forEach(el => {
