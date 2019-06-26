@@ -6,11 +6,12 @@
     "start": "node ./bin/www donkeysignage.imerir.org"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": ">=0.18.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
-    "hbs": "~4.0.1",
+    "handlebars": ">=4.0.14",
+    "hbs": "^4.0.4",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "uuid": "^3.3.2",
