@@ -57,10 +57,10 @@ router.get('/', function (req, res, next) {
                     res.render('index', { message: "Ok", state: state.mainInfo});
                     break;
                 case "AUTH_ERROR":
-                    res.render('index', { message: "Auth Fail", reason: state.mainInfo.message, state: state.mainInfo});
+                    res.render('index', { message: "Authentication  Fail !", reason: state.mainInfo.message, state: state.mainInfo});
                     break;
                 case "CON_ERROR":
-                    res.render('index', { message: "Connection to server fail", state: state.mainInfo});
+                    res.render('index', { message: "Connection to server fail !", state: state.mainInfo});
                     break;
 
             }

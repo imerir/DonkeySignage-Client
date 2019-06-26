@@ -5,7 +5,13 @@ $( document ).ready(function() {
     $.post("/api/getTemplate", (data) => {
         console.log(data);
         if(data == null){
-            $('#grid').append("No template");
+            let data = divWrap.slice(0);
+            data = data.replace(/\$posX/g, 3);
+            data = data.replace(/\$posY/g, 3);
+            data = data.replace(/\$sizeWidth/g, 11 );
+            data = data.replace(/\$sizeHeight/g, 7);
+
+            $('#grid').append(data.replace(/\$content/g, "<div class='center'><h2><b>Donkey Signage Client</b></h2><h3>No template selected</h3></div>"));
         }else{
             data.widgetConfigs.forEach((item) => {
                 console.log(item);

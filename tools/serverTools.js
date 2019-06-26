@@ -1,7 +1,7 @@
 // exports.serverAddr = 'https://donkeysignage.imerir.org';
 // exports.webSocketAddr = 'wss://donkeysignage.imerir.org/ws';
-exports.serverAddr = 'http://localhost:8080';
-exports.webSocketAddr = 'ws://localhost:8080/ws';
+exports.serverAddr = 'http://localhost:8081';
+exports.webSocketAddr = 'ws://localhost:8081/ws';
 
 const W3CWebSocket = require('websocket').w3cwebsocket;
 const configTools = require('../tools/configTools');
@@ -15,8 +15,12 @@ function  openWebSocket(wsURL) {
     let state = new State().getInstance();
     client = new W3CWebSocket(wsURL);
     client.onerror = function() {
-        console.log('Connection Error');
-        state.mainInfo.state = "CON_ERROR";
+        setTimeout(function () {
+            state.mainInfo.state = "CON_ERROR";
+            console.log('Connection Error');
+            setTimeout(retryConnection, 10000)
+        },1000);
+
     };
 
     client.onopen = function() {
@@ -33,8 +37,12 @@ function  openWebSocket(wsURL) {
     };
 
     client.onclose = function() {
-        state.mainInfo.state = "CON_ERROR";
-        console.log('Client Closed');
+        setTimeout(function () {
+            state.mainInfo.state = "CON_ERROR";
+            console.log('Client Closed');
+            setTimeout(retryConnection, 10000)
+        },1000);
+
     };
 
     client.onmessage = function(e) {
@@ -82,6 +90,11 @@ function getConfig(){
 
 function webSocketSend(value){
     client.send(value);
+}
+
+function retryConnection(){
+    let state = new State().getInstance();
+    state.mainInfo.state = "NEED_SOCKET";
 }
 
 

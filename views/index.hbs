@@ -1,9 +1,25 @@
 {{#ifeq state.tokenState "OK"}}
     {{#ifnoteq state.state "OK"}}
-        <h1>{{{message}}}</h1>
-        {{#if reason}}
-            <h2>{{reason}}</h2>
-        {{/if}}
+        <div class="row">
+            <div class="col s12 center">
+                <h1><b>Donkey Signage Client</b></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center {{#ifeq state.state "CON_ERROR"}} red-text{{/ifeq}} {{#ifeq state.state
+                                                                                                   "AUTH_ERROR"}} red-text{{/ifeq}}">
+                <h2>{{{message}}}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center">
+                {{#if reason}}
+                    <h3>{{reason}}</h3>
+                {{/if}}
+            </div>
+        </div>
+
+
     {{/ifnoteq}}
 
     {{#ifeq state.state "OK"}}
