@@ -110,4 +110,6 @@ function saveTemplate(value){
 
 }
 
+exports.getConfig = getConfig;
+
 exports.openWebSocket = openWebSocket;

@@ -3,6 +3,7 @@ var router = express.Router();
 const configTools = require('../tools/configTools');
 let State = require("../tools/state");
 const fs = require("fs");
+const servTools = require("../tools/serverTools");
 
 
 // Route for ..../api/...
@@ -61,6 +62,13 @@ router.get("/getWidgetConf", ((req, res, next) => {
     }
 
 
+}));
+
+
+router.post('/forceUpdate', ((req, res, next)=>{
+    servTools.getConfig();
+    res.status(204);
+    res.send('');
 }));
 
 module.exports = router;
