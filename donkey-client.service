@@ -1,0 +1,10 @@
+[Unit]
+Description=DonkeySignage Client service
+
+[Service]
+Type=simple
+ExecStart=npm start --prefix /opt/DonkeySignage-Client
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=graphical.target
