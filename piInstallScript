@@ -36,9 +36,5 @@ point-rpi
 @chromium-browser --kiosk http://localhost:3000" > /etc/xdg/lxsession/LXDE-pi/autostart
 
 
-echo -e "\e[32mInstalation complete\e[39m"
-read -p "Do you want to reboot now ?" -n 1 -r
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    reboot
-fi
+echo -e "\e[32mInstalation complete, please reboot.\e[39m"
+
