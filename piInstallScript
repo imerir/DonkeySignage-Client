@@ -1,0 +1,45 @@
+#!/bin/bash
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+echo -e "\e[32mAdding node repo\e[39m"
+curl -sL https://deb.nodesource.com/setup_11.x | bash -
+
+echo -e "\e[32mInstalling apps\e[39m"
+apt-get -y  install git nodejs unclutter chromium-browser
+
+echo -e "\e[32mCloning repo in /opt/DonkeySignage-Client\e[39m"
+
+cd /opt
+git clone https://github.com/imerir/DonkeySignage-Client.git
+
+echo -e "\e[32mInstalling libs...\e[39m"
+cd DonkeySignage-Client
+npm install
+
+
+echo -e "\e[32mInstalling service...\e[39m"
+curl https://raw.githubusercontent.com/imerir/DonkeySignage-Client/master/donkey-client.service -o /etc/systemd/system/donkey-client.service
+systemctl enable donkey-client.service
+
+
+echo "@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+@xscreensaver -no-splash
+point-rpi
+@xset s off
+@xset -dpms 
+@xset s noblank
+@unclutter -idle 5
+@chromium-browser --kiosk http://localhost:3000" > /etc/xdg/lxsession/LXDE-pi/autostart
+
+
+echo -e "\e[32mInstalation complete\e[39m"
+read -p "^[[32mDo you want to reboot now ?" -n 1 -r
+echo -e "\e[39m"    
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    reboot
+fi
