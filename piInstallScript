@@ -37,8 +37,7 @@ point-rpi
 
 
 echo -e "\e[32mInstalation complete\e[39m"
-read -p "^[[32mDo you want to reboot now ?" -n 1 -r
-echo -e "\e[39m"
+read -p "Do you want to reboot now ?" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     reboot
