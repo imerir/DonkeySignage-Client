@@ -3,7 +3,7 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root"
    exit 1
 fi
-
+timedatectl set-timezone Europe/Paris
 echo -e "\e[32mAdding node repo\e[39m"
 curl -sL https://deb.nodesource.com/setup_11.x | bash -
 
@@ -30,7 +30,7 @@ echo "@lxpanel --profile LXDE-pi
 @xscreensaver -no-splash
 point-rpi
 @xset s off
-@xset -dpms 
+@xset -dpms
 @xset s noblank
 @unclutter -idle 5
 @chromium-browser --kiosk http://localhost:3000" > /etc/xdg/lxsession/LXDE-pi/autostart
@@ -38,7 +38,7 @@ point-rpi
 
 echo -e "\e[32mInstalation complete\e[39m"
 read -p "^[[32mDo you want to reboot now ?" -n 1 -r
-echo -e "\e[39m"    
+echo -e "\e[39m"
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     reboot
